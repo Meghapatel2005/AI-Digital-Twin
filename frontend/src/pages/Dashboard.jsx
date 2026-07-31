@@ -1,6 +1,8 @@
-function Dashboard() {
+import KPICards from "../components/dashboard/KPICards";
+
+const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-[var(--bg)] text-white p-8">
+    <div className="min-h-screen bg-slate-950 p-8">
 
       <h1 className="text-4xl font-bold text-cyan-400">
         AI Digital Twin Dashboard
@@ -10,28 +12,12 @@ function Dashboard() {
         Enterprise Predictive Maintenance Platform
       </p>
 
-      <div className="grid grid-cols-4 gap-6 mt-10">
-
-        <div className="bg-slate-800 rounded-xl p-6">
-          Temperature
-        </div>
-
-        <div className="bg-slate-800 rounded-xl p-6">
-          Vibration
-        </div>
-
-        <div className="bg-slate-800 rounded-xl p-6">
-          Motor Speed
-        </div>
-
-        <div className="bg-slate-800 rounded-xl p-6">
-          AI Prediction
-        </div>
-
+      <div className="mt-10">
+        <KPICards />
       </div>
 
     </div>
   );
-}
+};
 
 export default Dashboard;
