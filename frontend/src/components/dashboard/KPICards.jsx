@@ -1,10 +1,10 @@
 import Card from "../ui/Card";
-import useSensorData from "../../hooks/useSensorData";
+import { useSensor } from "../../context/SensorContext";
 import { FaTemperatureHigh, FaBolt, FaHeartbeat } from "react-icons/fa";
 import { GiGearHammer } from "react-icons/gi";
 
 const KPICards = () => {
-  const sensorData = useSensorData();
+  const { sensorData } = useSensor();
 
   const kpiData = [
     {

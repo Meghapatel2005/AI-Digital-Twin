@@ -8,30 +8,10 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import Card from "../ui/Card";
-import useSensorData from "../../hooks/useSensorData";
+import { useSensor } from "../../context/SensorContext";
 
 const TemperatureChart = () => {
-  const sensorData = useSensorData();
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    setData((prev) => {
-      const updated = [
-        ...prev,
-        {
-          time: new Date().toLocaleTimeString(),
-          temperature: sensorData.temperature,
-        },
-      ];
-
-      if (updated.length > 10) {
-        updated.shift();
-      }
-
-      return updated;
-    });
-  }, [sensorData]);
+  const { history } = useSensor();
 
   return (
     <Card title="Live Temperature">
@@ -40,7 +20,7 @@ const TemperatureChart = () => {
 
         <ResponsiveContainer>
 
-          <LineChart data={data}>
+          <LineChart data={history}>
 
             <XAxis dataKey="time" hide />
 

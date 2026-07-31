@@ -1,3 +1,4 @@
+import { sensorHistory } from "../utils/sensorHistory";
 import { useEffect, useState } from "react";
 
 const useSensorData = () => {
@@ -10,7 +11,17 @@ const useSensorData = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setSensorData({
+        sensorHistory.push({
+  time: new Date().toLocaleTimeString(),
+  temperature: +(70 + Math.random() * 10).toFixed(1),
+  vibration: +(0.2 + Math.random() * 0.2).toFixed(2),
+  rpm: Math.floor(3400 + Math.random() * 100),
+});
+
+if (sensorHistory.length > 20) {
+  sensorHistory.shift();
+}
+        setSensorData({
         temperature: +(70 + Math.random() * 10).toFixed(1),
         vibration: +(0.2 + Math.random() * 0.2).toFixed(2),
         rpm: Math.floor(3400 + Math.random() * 100),
