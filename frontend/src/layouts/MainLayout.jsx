@@ -1,20 +1,20 @@
 import Sidebar from "../components/dashboard/Sidebar";
 import Navbar from "../components/dashboard/Navbar";
 
-function MainLayout() {
+const MainLayout = ({ children }) => {
   return (
-    <div style={{ display: "flex", height: "100vh", background: "#0B1220" }}>
+    <div className="flex bg-slate-950 min-h-screen">
       <Sidebar />
 
-      <div style={{ flex: 1 }}>
+      <main className="flex-1 p-8">
         <Navbar />
 
-        <div style={{ padding: "20px", color: "white" }}>
-          Dashboard Content
+        <div className="mt-8">
+          {children}
         </div>
-      </div>
+      </main>
     </div>
   );
-}
+};
 
 export default MainLayout;

@@ -1,22 +1,25 @@
+import MainLayout from "../layouts/MainLayout";
 import KPICards from "../components/dashboard/KPICards";
+import SensorCharts from "../components/dashboard/SensorCharts";
+import PredictionPanel from "../components/dashboard/PredictionPanel";
+import AlertPanel from "../components/dashboard/AlertPanel";
 
 const Dashboard = () => {
   return (
-    <div className="min-h-screen bg-slate-950 p-8">
+    <MainLayout>
 
-      <h1 className="text-4xl font-bold text-cyan-400">
-        AI Digital Twin Dashboard
-      </h1>
+      <KPICards />
 
-      <p className="text-slate-400 mt-2">
-        Enterprise Predictive Maintenance Platform
-      </p>
-
-      <div className="mt-10">
-        <KPICards />
+      <div className="mt-8">
+        <SensorCharts />
       </div>
 
-    </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+        <PredictionPanel />
+        <AlertPanel />
+      </div>
+
+    </MainLayout>
   );
 };
 
