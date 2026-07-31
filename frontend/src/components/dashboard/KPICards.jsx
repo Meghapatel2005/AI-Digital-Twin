@@ -1,31 +1,34 @@
 import Card from "../ui/Card";
+import useSensorData from "../../hooks/useSensorData";
 import { FaTemperatureHigh, FaBolt, FaHeartbeat } from "react-icons/fa";
 import { GiGearHammer } from "react-icons/gi";
 
-const kpiData = [
-  {
-    title: "Temperature",
-    value: "72°C",
-    icon: <FaTemperatureHigh className="text-red-400 text-3xl" />,
-  },
-  {
-    title: "Vibration",
-    value: "0.32 mm/s",
-    icon: <FaBolt className="text-yellow-400 text-3xl" />,
-  },
-  {
-    title: "Motor Speed",
-    value: "3450 RPM",
-    icon: <GiGearHammer className="text-cyan-400 text-3xl" />,
-  },
-  {
-    title: "AI Health",
-    value: "98%",
-    icon: <FaHeartbeat className="text-green-400 text-3xl" />,
-  },
-];
-
 const KPICards = () => {
+  const sensorData = useSensorData();
+
+  const kpiData = [
+    {
+      title: "Temperature",
+      value: `${sensorData.temperature} °C`,
+      icon: <FaTemperatureHigh className="text-red-400 text-3xl" />,
+    },
+    {
+      title: "Vibration",
+      value: `${sensorData.vibration} mm/s`,
+      icon: <FaBolt className="text-yellow-400 text-3xl" />,
+    },
+    {
+      title: "Motor Speed",
+      value: `${sensorData.rpm} RPM`,
+      icon: <GiGearHammer className="text-cyan-400 text-3xl" />,
+    },
+    {
+      title: "AI Health",
+      value: `${sensorData.health}%`,
+      icon: <FaHeartbeat className="text-green-400 text-3xl" />,
+    },
+  ];
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
       {kpiData.map((item) => (
