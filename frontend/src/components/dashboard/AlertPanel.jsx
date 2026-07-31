@@ -1,26 +1,45 @@
 import Card from "../ui/Card";
-
-const alerts = [
-  "Temperature exceeded safe limit",
-  "Motor vibration increasing",
-  "Maintenance scheduled tomorrow",
-];
+import useSensorData from "../../hooks/useSensorData";
 
 const AlertPanel = () => {
+  const sensorData = useSensorData();
+
+  const alerts = [];
+
+  if (sensorData.temperature > 77) {
+    alerts.push("🔥 High Temperature Detected");
+  }
+
+  if (sensorData.vibration > 0.35) {
+    alerts.push("⚠ Excessive Vibration");
+  }
+
+  if (sensorData.rpm > 3480) {
+    alerts.push("⚙ High Motor Speed");
+  }
+
+  if (sensorData.health < 96) {
+    alerts.push("❤️ AI Health Dropping");
+  }
+
   return (
     <Card title="Recent Alerts">
-      <div className="space-y-3">
-
-        {alerts.map((alert, index) => (
-          <div
-            key={index}
-            className="bg-slate-700 rounded-lg p-3 text-slate-200"
-          >
-            {alert}
-          </div>
-        ))}
-
-      </div>
+      {alerts.length === 0 ? (
+        <p className="text-green-400">
+          ✅ All systems operating normally
+        </p>
+      ) : (
+        <div className="space-y-3">
+          {alerts.map((alert, index) => (
+            <div
+              key={index}
+              className="bg-red-500/20 border border-red-500 rounded-lg p-3 text-red-300"
+            >
+              {alert}
+            </div>
+          ))}
+        </div>
+      )}
     </Card>
   );
 };
