@@ -4,11 +4,14 @@ import App from "./App";
 import "./index.css";
 
 import { SensorProvider } from "./context/SensorContext";
+import { NotificationProvider } from "./context/NotificationContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <SensorProvider>
-      <App />
+      <NotificationProvider>
+        <App />
+      </NotificationProvider>
     </SensorProvider>
   </React.StrictMode>
 );

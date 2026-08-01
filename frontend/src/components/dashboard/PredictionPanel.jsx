@@ -3,6 +3,7 @@ import { shouldStoreAlert } from "../../utils/alertManager";
 import { generateAlert } from "../../utils/alertEngine";
 import { addPrediction } from "../../utils/predictionHistory";
 import { useEffect, useState } from "react";
+import { useNotification } from "../../context/NotificationContext";
 import { getPrediction } from "../../services/api";
 import { showNotification } from "../../utils/notification";
 
@@ -13,6 +14,7 @@ export default function PredictionPanel() {
   });
 
   const alert = generateAlert(prediction.failure_probability);
+  const { showToast } = useNotification();
 
   useEffect(() => {
     const fetchPrediction = async () => {
@@ -25,6 +27,8 @@ export default function PredictionPanel() {
 
 if (shouldStoreAlert(alert)) {
   addAlert(alert);
+
+  showToast(alert.message, alert.type.toLowerCase());
 
   if (alert.type === "Critical") {
     showNotification("🚨 Critical Machine Alert", alert.message);

@@ -1,11 +1,14 @@
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import Toast from "./components/ui/Toast";
 
 function App() {
-  // Later we will use React Router.
-  // For now, directly open Dashboard.
-
-  return <Dashboard />;
+  return (
+  <>
+    <Dashboard />
+    <Toast />
+  </>
+);
 }
 
 export default App;
