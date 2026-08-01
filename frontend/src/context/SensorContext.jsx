@@ -1,3 +1,4 @@
+import { getPrediction } from "../services/api";
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../services/api";
 
@@ -5,6 +6,7 @@ const SensorContext = createContext();
 
 export const SensorProvider = ({ children }) => {
   const [history, setHistory] = useState([]);
+  const [predictionHistory, setPredictionHistory] = useState([]);
 
   const [sensorData, setSensorData] = useState({
     temperature: 72,
@@ -19,6 +21,18 @@ export const SensorProvider = ({ children }) => {
         const { data } = await api.get("/api/sensor");
 
         setSensorData(data);
+
+        const prediction = await getPrediction();
+
+setPredictionHistory((prev) => {
+  const updated = [...prev, prediction];
+
+  if (updated.length > 10) {
+    updated.shift();
+  }
+
+  return updated;
+});
 
         setHistory((prev) => {
           const updated = [
@@ -46,7 +60,8 @@ export const SensorProvider = ({ children }) => {
   }, []);
 
   return (
-    <SensorContext.Provider value={{ sensorData, history }}>
+    <SensorContext.Provider 
+  value={{ sensorData, history, predictionHistory }}>
       {children}
     </SensorContext.Provider>
   );

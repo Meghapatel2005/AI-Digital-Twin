@@ -1,3 +1,4 @@
+import AlertHistory from "../components/dashboard/AlertHistory";
 import MainLayout from "../layouts/MainLayout";
 import KPICards from "../components/dashboard/KPICards";
 import SensorCharts from "../components/dashboard/SensorCharts";
@@ -15,9 +16,13 @@ const Dashboard = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
-        <PredictionPanel />
-        <AlertPanel />
-      </div>
+  <div>
+    <PredictionPanel />
+    <AlertHistory />
+  </div>
+
+  <AlertPanel />
+</div>
 
     </MainLayout>
   );

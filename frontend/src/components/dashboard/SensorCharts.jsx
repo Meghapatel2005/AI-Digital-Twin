@@ -1,3 +1,4 @@
+import PredictionChart from "../charts/PredictionChart";
 import TemperatureChart from "../charts/TemperatureChart";
 import VibrationChart from "../charts/VibrationChart";
 import SpeedChart from "../charts/SpeedChart";
@@ -8,6 +9,7 @@ const SensorCharts = () => {
       <TemperatureChart />
       <VibrationChart />
       <SpeedChart />
+      <PredictionChart />
     </div>
   );
 };

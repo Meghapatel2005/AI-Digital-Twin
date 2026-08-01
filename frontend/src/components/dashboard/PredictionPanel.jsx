@@ -1,3 +1,5 @@
+import { addAlert } from "../../utils/alertHistory";
+import { generateAlert } from "../../utils/alertEngine";
 import { addPrediction } from "../../utils/predictionHistory";
 import { useEffect, useState } from "react";
 import { getPrediction } from "../../services/api";
@@ -8,12 +10,18 @@ export default function PredictionPanel() {
     status: "Loading...",
   });
 
+  const alert = generateAlert(prediction.failure_probability);
+
   useEffect(() => {
     const fetchPrediction = async () => {
       try {
         const data = await getPrediction();
         setPrediction(data);
         addPrediction(data);
+
+        const alert = generateAlert(data.failure_probability);
+        addAlert(alert);
+        
       } catch (error) {
         console.error(error);
       }
@@ -54,6 +62,33 @@ export default function PredictionPanel() {
     </h1>
 
     <h3>{prediction.status}</h3>
+    
+    <div
+  style={{
+    display: "inline-block",
+    marginTop: "10px",
+    padding: "6px 14px",
+    borderRadius: "20px",
+    background: alert.color,
+    color: "white",
+    fontWeight: "bold",
+    fontSize: "14px",
+  }}
+>
+  {alert.type}
+</div>
+
+    <p
+  style={{
+    marginTop: "15px",
+    fontWeight: "bold",
+    color: alert.color,
+    fontSize: "18px",
+  }}
+>
+  {alert.message}
+</p>
+
   </div>
 );
 }
