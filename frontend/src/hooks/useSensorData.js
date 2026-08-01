@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
 
 const useSensorData = () => {
   const [sensorData, setSensorData] = useState({
@@ -10,20 +9,20 @@ const useSensorData = () => {
   });
 
   useEffect(() => {
-    const fetchSensor = async () => {
-      try {
-        const response = await api.get("/api/sensor");
-        setSensorData(response.data);
-      } catch (error) {
-        console.error("Sensor API Error:", error);
-      }
+    const socket = new WebSocket("ws://127.0.0.1:8000/ws/sensor");
+
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      setSensorData(data);
     };
 
-    fetchSensor();
+    socket.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
 
-    const interval = setInterval(fetchSensor, 1000);
-
-    return () => clearInterval(interval);
+    return () => {
+      socket.close();
+    };
   }, []);
 
   return sensorData;

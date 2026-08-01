@@ -5,3 +5,8 @@ const api = axios.create({
 });
 
 export default api;
+
+export const getPrediction = async () => {
+  const response = await api.get("/api/predict");
+  return response.data;
+};
