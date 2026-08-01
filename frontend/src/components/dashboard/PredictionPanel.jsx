@@ -1,8 +1,10 @@
 import { addAlert } from "../../utils/alertHistory";
+import { shouldStoreAlert } from "../../utils/alertManager";
 import { generateAlert } from "../../utils/alertEngine";
 import { addPrediction } from "../../utils/predictionHistory";
 import { useEffect, useState } from "react";
 import { getPrediction } from "../../services/api";
+import { showNotification } from "../../utils/notification";
 
 export default function PredictionPanel() {
   const [prediction, setPrediction] = useState({
@@ -20,7 +22,14 @@ export default function PredictionPanel() {
         addPrediction(data);
 
         const alert = generateAlert(data.failure_probability);
-        addAlert(alert);
+
+if (shouldStoreAlert(alert)) {
+  addAlert(alert);
+
+  if (alert.type === "Critical") {
+    showNotification("🚨 Critical Machine Alert", alert.message);
+  }
+}
         
       } catch (error) {
         console.error(error);

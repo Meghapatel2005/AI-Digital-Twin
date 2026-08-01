@@ -22,7 +22,29 @@ export default function AlertHistory() {
         marginTop: "20px",
       }}
     >
-      <h3>🚨 Alert History</h3>
+      <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "15px",
+  }}
+>
+  <h3>🚨 Alert History</h3>
+
+  <span
+    style={{
+      background: "#ef4444",
+      color: "white",
+      borderRadius: "999px",
+      padding: "4px 10px",
+      fontSize: "13px",
+      fontWeight: "bold",
+    }}
+  >
+    {alerts.length}
+  </span>
+</div>
 
       {alerts.length === 0 ? (
         <p>No alerts yet</p>
