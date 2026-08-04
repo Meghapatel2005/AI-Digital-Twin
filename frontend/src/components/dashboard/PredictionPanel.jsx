@@ -49,16 +49,51 @@ if (shouldStoreAlert(alert)) {
 
   return (
   <div
+  style={{
+    background: "rgba(30,41,59,0.85)",
+    backdropFilter: "blur(10px)",
+    color: "white",
+    padding: "24px",
+    borderRadius: "18px",
+    border: "1px solid rgba(34,197,94,0.25)",
+    boxShadow: "0 0 20px rgba(34,197,94,0.15)",
+    textAlign: "center",
+    transition: "all 0.3s ease",
+  }}
+>
+    <div
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "15px",
+  }}
+>
+  <h2
     style={{
-      background: "#1e293b",
-      color: "white",
-      padding: "20px",
-      borderRadius: "12px",
-      boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
-      textAlign: "center",
+      fontSize: "24px",
+      fontWeight: "bold",
+      letterSpacing: "0.5px",
+      margin: 0,
     }}
   >
-    <h2 style={{ marginBottom: "15px" }}>🤖 AI Prediction</h2>
+    🤖 AI Prediction
+  </h2>
+
+  <span
+    style={{
+      background: "#22c55e",
+      color: "white",
+      padding: "4px 10px",
+      borderRadius: "20px",
+      fontSize: "12px",
+      fontWeight: "bold",
+      boxShadow: "0 0 10px rgba(34,197,94,0.6)",
+    }}
+  >
+    🟢 LIVE
+  </span>
+</div>
 
     <h1
       style={{
@@ -74,7 +109,15 @@ if (shouldStoreAlert(alert)) {
       {prediction.failure_probability}%
     </h1>
 
-    <h3>{prediction.status}</h3>
+    <h3
+  style={{
+    fontSize: "20px",
+    fontWeight: "bold",
+    marginTop: "8px",
+  }}
+>
+  {prediction.status}
+</h3>
     
     <div
   style={{

@@ -7,6 +7,7 @@ const SensorContext = createContext();
 export const SensorProvider = ({ children }) => {
   const [history, setHistory] = useState([]);
   const [predictionHistory, setPredictionHistory] = useState([]);
+  const [healthHistory, setHealthHistory] = useState([]);
 
   const [sensorData, setSensorData] = useState({
     temperature: 72,
@@ -21,6 +22,19 @@ export const SensorProvider = ({ children }) => {
         const { data } = await api.get("/api/sensor");
 
         setSensorData(data);
+        setHealthHistory((prev) => {
+  const updated = [
+    ...prev,
+    {
+      health: data.health,
+      time: new Date().toLocaleTimeString(),
+    },
+  ];
+
+  if (updated.length > 20) updated.shift();
+
+  return updated;
+});
 
         const prediction = await getPrediction();
 
@@ -61,7 +75,12 @@ setPredictionHistory((prev) => {
 
   return (
     <SensorContext.Provider 
-  value={{ sensorData, history, predictionHistory }}>
+  value={{
+  sensorData,
+  history,
+  predictionHistory,
+  healthHistory,
+}}>
       {children}
     </SensorContext.Provider>
   );

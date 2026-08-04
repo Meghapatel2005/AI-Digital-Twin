@@ -39,9 +39,15 @@ const KPICards = () => {
                 {item.title}
               </p>
 
-              <h2 className="text-3xl font-bold text-white mt-2">
-                {item.value}
-              </h2>
+              <h2
+  className={`text-3xl font-bold mt-2 transition-all duration-500 ${
+    item.title === "AI Health"
+      ? "text-green-400 animate-pulse"
+      : "text-white"
+  }`}
+>
+  {item.value}
+</h2>
             </div>
 
             {item.icon}
