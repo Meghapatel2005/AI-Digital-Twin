@@ -1,5 +1,5 @@
 import { Canvas, useFrame } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, Text } from "@react-three/drei";
 import { useRef } from "react";
 import { useSensor } from "../../context/SensorContext";
 
@@ -23,6 +23,17 @@ function RobotArm() {
       : sensorData.health > 50
       ? "#f59e0b"
       : "#ef4444";
+
+  const warning = sensorData.temperature > 85;
+
+  const prediction =
+  sensorData.health > 80
+    ? "🟢 NORMAL"
+    : sensorData.health > 50
+    ? "🟡 MAINTENANCE SOON"
+    : "🔴 CRITICAL";
+
+  const blink = Math.sin(Date.now() * 0.02) > 0;
 
   const emissiveIntensity =
     sensorData.temperature > 85
@@ -69,6 +80,19 @@ useFrame(() => {
 
   // Robot base rotation
   armRef.current.rotation.y += sensorData.rpm / 250000;
+ 
+  const vibrationScale =
+  sensorData.vibration < 0.5 ? 0.06 : 0.10;
+
+armRef.current.position.x =
+  Math.sin(Date.now() * 0.08) *
+  sensorData.vibration *
+  vibrationScale;
+
+armRef.current.position.z =
+  Math.cos(Date.now() * 0.08) *
+  sensorData.vibration *
+  vibrationScale;
 
   const box = boxRef.current;
 
@@ -138,9 +162,11 @@ useFrame(() => {
         {/* Conveyor Belt */}
 <mesh position={[-3, -1.4, 0]}>
   <boxGeometry args={[4, 0.2, 1]} />
-  <meshStandardMaterial color="#475569"
-  metalness={0.8}
-  roughness={0.3} />
+  <meshStandardMaterial
+  color="#3b4553"
+  metalness={0.9}
+  roughness={0.15}
+/>
 </mesh>
 
 {/* Factory Floor */}
@@ -162,6 +188,16 @@ roughness={0.3} />
         metalness={0.8}
 roughness={0.3} />
       </mesh>
+
+      {/* Base Glow Ring */}
+<mesh position={[0, -1.42, 0]}>
+  <cylinderGeometry args={[1.15, 1.15, 0.03, 32]} />
+  <meshStandardMaterial
+    color="#38bdf8"
+    emissive="#38bdf8"
+    emissiveIntensity={0.35}
+  />
+</mesh>
 
       {/* Vertical Column */}
       <mesh
@@ -202,6 +238,67 @@ roughness={0.3} />
 roughness={0.3}
   />
 </mesh>
+
+{/* AI Status Halo */}
+<mesh position={[0, 1.7, 0]} rotation={[Math.PI / 2, 0, 0]}>
+  <torusGeometry args={[0.22, 0.03, 16, 100]} />
+  <meshStandardMaterial
+    color={ledColor}
+    emissive={ledColor}
+    emissiveIntensity={2}
+  />
+</mesh>
+
+{warning && blink && (
+  <mesh position={[0, 2.0, 0]}>
+    <sphereGeometry args={[0.18, 32, 32]} />
+    <meshStandardMaterial
+      color="red"
+      emissive="red"
+      emissiveIntensity={4}
+    />
+  </mesh>
+)}
+
+{/* Temperature Label */}
+<Text
+  position={[0, 2.70, 0]}
+  fontSize={0.18}
+  color="white"
+  anchorX="center"
+  anchorY="middle"
+>
+  {`🌡 ${sensorData.temperature}°C`}
+</Text>
+
+<Text
+  position={[0, 2.45, 0]}
+  fontSize={0.16}
+  color="#38bdf8"
+  anchorX="center"
+  anchorY="middle"
+>
+  {`⚙ ${sensorData.rpm} RPM`}
+</Text>
+
+<Text
+  position={[0, 2.2, 0]}
+  fontSize={0.16}
+  color="#22c55e"
+  anchorX="center"
+  anchorY="middle"
+>
+  {`❤️ ${sensorData.health}%`}
+</Text>
+
+<Text
+  position={[0, 1.95, 0]}
+  fontSize={0.13}
+  color="#38bdf8"
+  anchorX="center"
+>
+  {prediction}
+</Text>
 
       {/* Shoulder Group */}
 <group position={[0, 1.2, 0]} rotation={[0, 0, shoulderAngle]}>
@@ -281,6 +378,8 @@ export default function RobotScene() {
   camera={{ position: [4, 3.5, 7], fov: 45 }}
 >
       <ambientLight intensity={0.8} />
+
+      <fog attach="fog" args={["#0f172a", 8, 20]} />
 
 <directionalLight
   castShadow
