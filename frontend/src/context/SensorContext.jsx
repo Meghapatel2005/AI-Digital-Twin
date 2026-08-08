@@ -39,7 +39,13 @@ export const SensorProvider = ({ children }) => {
         const prediction = await getPrediction();
 
 setPredictionHistory((prev) => {
-  const updated = [...prev, prediction];
+  const updated = [
+  ...prev,
+  {
+    ...prediction,
+    time: new Date().toLocaleTimeString(),
+  },
+];
 
   if (updated.length > 10) {
     updated.shift();
