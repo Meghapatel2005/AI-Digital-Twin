@@ -13,10 +13,16 @@ def predict_failure(sensor_data):
     prediction = model.predict(X)[0]
     probability = model.predict_proba(X)[0][1] * 100
 
-    if prediction == 1:
-        status = "High Risk"
+    if probability >= 70 or (
+    sensor_data["temperature"] > 90
+    and sensor_data["vibration"] > 0.65
+    and sensor_data["health"] < 70
+):
+     status = "High Risk"
+    elif probability >= 30:
+     status = "Medium Risk"
     else:
-        status = "Low Risk"
+     status = "Low Risk"
 
     return {
         "failure_probability": round(probability, 2),
