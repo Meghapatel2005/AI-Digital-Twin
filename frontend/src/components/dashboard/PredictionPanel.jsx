@@ -106,7 +106,7 @@ if (shouldStoreAlert(alert)) {
             : "#22c55e",
       }}
     >
-      {prediction.failure_probability}%
+      {Number(prediction.failure_probability).toFixed(1)}%
     </h1>
 
     <h3
